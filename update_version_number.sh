@@ -1,11 +1,12 @@
 #!/bin/bash
 
+VERSION="014"
 
 for infile in ./*.c; do
 
     # outfile="${infile%.in}.bak"
     # cp $infile $outfile
-    sed -i '' "s/VERSION_008/VERSION_009/" $infile  
+    sed -i '' "s/VERSION_.../VERSION_$VERSION/" $infile  
 
 
 done
@@ -15,7 +16,7 @@ for infile in ./*.h; do
 
     # outfile="${infile%.in}.bak"
     # cp $infile $outfile
-    sed -i '' "s/VERSION_008/VERSION_009/" $infile  
+    sed -i '' "s/VERSION_.../VERSION_$VERSION/" $infile  
 
 
 done

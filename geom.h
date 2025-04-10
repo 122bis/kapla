@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------
 // geom.h 
-// project : Kapla VERSION_009 
+// project : Kapla VERSION_013 
 // -----------------------------------------------------------------------------
 
 #ifndef GEOM
@@ -51,6 +51,7 @@
  
     struct Color WHITE;
     struct Color GREY;
+    struct Color GREY_122;  // dark 122bis site background
     struct Color PAPER;
     struct Color DARK;
 
@@ -59,8 +60,12 @@
     struct Color KGREEN;    // green telepantin
     struct Color KYELLOW;   // yellow telepantin
 
-    // ... FUNCTIONS ...
+    struct Color KLRED;      // light red telepantin
+    struct Color KLBLUE;     // light blue telepantin
+    struct Color KLGREEN;    // light green telepantin
+    struct Color KLYELLOW;   // light yellow telepantin
 
+    // ... FUNCTIONS ...
     struct Color color_deep_copy(struct Color * q);
 
 
@@ -72,8 +77,11 @@
     void  dot_draw(cairo_t * cr, struct Color * k, struct Point * p);
     void spot_draw(cairo_t * cr, struct Color * k, struct Point * p);
     void  rec_draw(cairo_t * cr, struct Color * k, struct Point * c, int w, int h);
+    void  box_draw(cairo_t * cr, struct Color * k, struct Point * c, int w, int h);
     void rrec_draw(cairo_t * cr, struct Color * k, struct Point * c, int w, int h, double a);
     void quad_draw(cairo_t * cr, struct Color * k, struct  Quad * q);
+    void circle_draw(cairo_t * cr, struct Color * k, struct Point * p, int d);
+    void disk_draw(cairo_t * cr, struct Color * k, struct Point * p, int d);
 
 
     // ... HELPERS .............................................................

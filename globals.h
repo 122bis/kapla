@@ -1,16 +1,37 @@
+// -----------------------------------------------------------------------------
+// globals.h 
+// project : Kapla VERSION_013 
+//
+//                 GLOBAL PROGRAM SETTINGS 
+//
+// -----------------------------------------------------------------------------
 
-// ... GLOBALS ...
-int FPS;          
-int PNGEXPORT;    
-int PNG_WIDTH;    
-int PNG_HEIGHT;   
-int SCREEN_WIDTH; 
-int SCREEN_HEIGHT;
-int FIG_NUM_X;  // number of crosses figures on X axis 
-int FIG_NUM_Y;  // number of crosses figures on Y axis  
-int FIG_NUM;    // number of crosses figures in figlist  
-int PIX_MULT;   // object size multipier relative to screen size for good anti-aliasing
-int ORB_RPM;    // scene engine revolutions per minute
-float ORB_DESYNC; // desynchronisation factor for extra crosses
-struct Color BACKGROUND;
-float ELAPSED_SECONDS;
+#ifndef GLOBALS
+    #define GLOBALS
+
+    #include "geom.h"
+
+    // ... TIME ...
+    #define _FPS 12  // frames per sec for both png export and screen play    
+    #define _ORB_RPM 30  // orbital engine revolutions per minute
+   
+    // ... DIMENSIONS ...
+    #define _WIN_WIDTH_MM 55 // win width (mm)
+    #define _WIN_HEIGTH_MM 55 // win height (mm) --> playcard = 55x85
+    #define _PNGEXPORT 0 
+    #define _PNG_WIDTH 2560  
+    #define _PNG_HEIGHT 1600
+    #define _DPI  152   // 92 normal , 152 retina set to high density
+    #define _INCH_PER_MM 0.039
+  
+
+    // ... BACKGROUND ... 
+    #define _BACKGROUND GREY_122
+
+    // ... GLOBALS ...
+
+    int WIN_WIDTH; 
+    int WIN_HEIGHT;
+    float ALPHA;
+    float OMEGA;
+#endif

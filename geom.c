@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------
 // geom.c 
-// project : Kapla VERSION_009 
+// project : Kapla VERSION_013 
 // -----------------------------------------------------------------------------
 
 #include <stdio.h>
@@ -67,6 +67,7 @@ struct Quad quad_rotate(struct Quad * q, struct Point * center, float alpha)
 
 struct Color WHITE =   {255/255.0, 255/255.0, 255/255.0, 1};
 struct Color GREY =    {207/255.0, 197/255.0, 182/255.0, 1};
+struct Color GREY_122 = {37/255.0,  37/255.0,  41/255.0, 1};  // 122bis site background
 struct Color PAPER =   {254/255.0, 247/255.0, 225/255.0, 1};
 struct Color DARK  =   { 34/255.0,  37/255.0,  41/255.0, 1};
 
@@ -74,6 +75,11 @@ struct Color KRED =    {255/255.0,  69/255.0,   0/255.0, 1};  // red telepantin
 struct Color KBLUE =   {  0/255.0,   0/255.0, 140/255.0, 1};      // blue telepantin
 struct Color KGREEN =  {  0/255.0,  99/255.0,   0/255.0, 1};      // green telepantin
 struct Color KYELLOW = {255/255.0, 214/255.0,   0/255.0, 1};  // yellow telepantin
+
+struct Color KLRED =    {255/255.0,  69/255.0,   0/255.0, 0.4};  // red telepantin
+struct Color KLBLUE =   {  0/255.0,   0/255.0, 140/255.0, 0.4};      // blue telepantin
+struct Color KLGREEN =  {  0/255.0,  99/255.0,   0/255.0, 0.4};      // green telepantin
+struct Color KLYELLOW = {255/255.0, 214/255.0,   0/255.0, 0.4};  // yellow telepantin
 
 //  ... color deep copy ...
 
@@ -116,6 +122,7 @@ void spot_draw(cairo_t * cr, struct Color * k, struct Point * p)
     cairo_restore(cr);
 }
 
+
 //  ... draw a simple rectangle ...
 
 void rec_draw(cairo_t * cr, struct Color * k, struct Point * c, int w, int h)
@@ -127,6 +134,21 @@ void rec_draw(cairo_t * cr, struct Color * k, struct Point * c, int w, int h)
     // cairo_rectangle(context, top, left, width, height)
     cairo_rectangle(cr, c->x - w * 0.5, c->y - h * 0.5, w, h);
     cairo_fill (cr);
+    cairo_restore(cr);
+}
+
+
+//  ... outline of a rectangle ...
+
+void box_draw(cairo_t * cr, struct Color * k, struct Point * c, int w, int h)
+{
+    // rectangle(context, color, center position, width, height)
+    cairo_save(cr);
+    cairo_set_source_rgba(cr,  k->r, k->g, k->b, k->a);
+    // cairo_set_line_width(cr, 5);
+    // cairo_rectangle(context, top, left, width, height)
+    cairo_rectangle(cr, c->x - w * 0.5, c->y - h * 0.5, w, h);
+    cairo_stroke (cr);
     cairo_restore(cr);
 }
 
@@ -146,6 +168,7 @@ void rrec_draw(cairo_t * cr, struct Color * k, struct Point * c, int w, int h, d
     cairo_restore(cr);
 }
 
+
 //  ...draws a quadrangular shape ...
 
 void quad_draw(cairo_t * cr, struct Color * k, struct Quad * q)
@@ -162,6 +185,29 @@ void quad_draw(cairo_t * cr, struct Color * k, struct Quad * q)
     cairo_restore(cr);
 }
 
+
+//  ... draw  a CIRCLE  ...
+
+void circle_draw(cairo_t * cr, struct Color * k, struct Point * p, int d)
+{
+    cairo_save(cr);
+    cairo_set_source_rgba(cr, k->r, k->g, k->b, k->a);
+    cairo_arc(cr, p->x, p->y, d, 0, TWO_PI);
+    cairo_stroke (cr);
+    cairo_restore(cr);
+}
+
+
+//  ... draw a DISC  ...
+
+void disk_draw(cairo_t * cr, struct Color * k, struct Point * p, int d)
+{
+    cairo_save(cr);
+    cairo_set_source_rgba(cr, k->r, k->g, k->b, k->a);
+    cairo_arc(cr, p->x, p->y, d, 0, TWO_PI);
+    cairo_fill (cr);
+    cairo_restore(cr);
+}
 
 // -----------------------------------------------------------------------------
 // . HELPERS - useful math and 2D trigo functions
