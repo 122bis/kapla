@@ -2,12 +2,14 @@
 simple 2d cinematic loop
 ------------------------
 
-using : gt4 / cairo
+dependencies : gt4 / cairo<br>
 osx bin : kapla
 
-    q  to quit
-    f  to toggle fullscreen
-    space  to toggle the window bar
+
+    'q'  to quit
+    'f'  to toggle fullscreen
+    'space'  to toggle the window bar
+
 
 ---
 
