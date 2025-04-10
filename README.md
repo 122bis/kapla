@@ -2,6 +2,7 @@
 simple 2d cinematic loop
 ------------------------
 
+using : gt4 / cairo
 osx bin : kapla
 
     q  to quit
