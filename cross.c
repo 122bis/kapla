@@ -1,21 +1,34 @@
 // -----------------------------------------------------------------------------
 // cross.c
-// project : Kapla VERSION_013
+// project : Kapla VERSION_014
 // -----------------------------------------------------------------------------
 
 #include "cross.h"
 
-void init()
+void init(int w, int h, float scale)
 {
-    PIX_MULT = 3.2;
-    len = 33 * PIX_MULT;
-    wth = 11 * PIX_MULT;
-    thk =  6 * PIX_MULT;
+
+    // ... init GLOBALS ...
+    WIDTH  = w * _DPI * _INCH_PER_MM;
+    HEIGHT = h * _DPI * _INCH_PER_MM;
+    //printf("WIN_WIDTH  = %d\n", WIN_WIDTH );
+    //printf("WIN_HEIGHT = %d\n", WIN_HEIGHT);
+
+    INTERVAL = (int)(1000000 / _FPS);   // wait duration (microseconds) in idle loop usleep()
+    MICROSECONDS = 0;     // total elapsed time (microseconds)
+    ELAPSED_SECONDS = 0;
+
+    ALPHA = 0;  // orb engine angle (radians)
+    OMEGA = TWO_PI * (float)_ORB_RPM / 60.0; // angular velocity (radians per sec) : 1 rev.p.mn = 1/60 rev.p.s
+
+    len = 33 * scale;
+    wth = 11 * scale;
+    thk =  6 * scale;
     extents_x = 0.55 * (len + thk + wth + len + thk - len);
     extents_y = 0.55 * (len + thk + wth + len + thk - len );
 
-    center.x = WIN_WIDTH  * 0.5;
-    center.y = WIN_HEIGHT * 0.5;  // position of the cross on screen
+    center.x = WIDTH * 0.5;
+    center.y = HEIGHT * 0.5;  // position of the cross on screen
 
     // positions of four + 1 sliding horizontal rects
     p1 = (struct Point) { len/2 + wth/2 + thk,    wth/2+thk/2 };
@@ -35,10 +48,6 @@ void init()
     previous_orb = (struct Point) { 0, 0 };
 }
 
-void set_sizes()
-{
-
-}
 void orbit(float t)
 {
     // wheel is rotating, angle stays within [0,360°]
@@ -95,10 +104,10 @@ void draw(cairo_t * cr)
     cairo_save(cr);
     cairo_translate(cr, center.x, center.y);
     
-    //box_draw(cr, & KRED,    & h_slider, len, WIN_HEIGHT + 5); // h_slider box
-    rec_draw(cr, & KLRED,    & h_slider, len, WIN_HEIGHT + 5); // h_slider box
-    //box_draw(cr, & KGREEN,  & v_slider, WIN_WIDTH + 5, len); // v_slider
-    rec_draw(cr, & KLGREEN,  & v_slider, WIN_WIDTH + 5, len); // v_slider
+    //box_draw(cr, & KRED,    & h_slider, len, HEIGHT + 5); // h_slider box
+    rec_draw(cr, & KLRED,    & h_slider, len, HEIGHT + 5); // h_slider box
+    //box_draw(cr, & KGREEN,  & v_slider, WIDTH + 5, len); // v_slider
+    rec_draw(cr, & KLGREEN,  & v_slider, WIDTH + 5, len); // v_slider
     disk_draw(cr, & _BACKGROUND,  & orb, len * 0.5); // orb disc
 
     // four + 1 sliding horizontal rects

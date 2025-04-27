@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------
 // cross.h 
-// project : Kapla VERSION_013 
+// project : Kapla VERSION_014 
 // -----------------------------------------------------------------------------
 
 #ifndef CROSS
@@ -43,7 +43,7 @@
 
 
     // STATIC FIGURE LIST FUNCTIONS ------------------------------------------------
-    void init();
+    void init(int w, int h, float s); // width height and content scaling factor
     void orbit(float ELAPSED_SECONDS);
     void update();
     void draw(cairo_t * cr);

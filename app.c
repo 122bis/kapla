@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------
 // app.c  
-// project : kapla VERSION_013 
+// project : kapla VERSION_014
 // -----------------------------------------------------------------------------
 
 
@@ -17,12 +17,6 @@ static gboolean on_key_pressed(GtkWidget * drawing_area, guint keyval, guint key
 static GtkWidget * C;                 // the drawing widget
 static GtkWidget * W;                 // the window
 
-// time
-static unsigned int WAIT = (int)(1000000 / _FPS);   // wait duration (microseconds) in idle loop usleep()
-static unsigned long MICROSECONDS = 0;     // total elapsed time (microseconds)
-static float ELAPSED_SECONDS = 0;
-
-
 // ... INTERACTION ...
 static gboolean on_key_pressed(GtkWidget * drawing_area, guint keyval, guint keycode, GdkModifierType state, GtkEventControllerKey * event_controller){
     if (keyval == 'q') gtk_window_destroy (GTK_WINDOW (W));
@@ -33,16 +27,15 @@ static gboolean on_key_pressed(GtkWidget * drawing_area, guint keyval, guint key
         // Print the screen size
         printf("Screen size: %d x %d\n", width, height);
 
-
         if (gtk_window_is_fullscreen ( GTK_WINDOW (W))){
             gtk_window_unfullscreen ( GTK_WINDOW (W));
-            init();
             gtk_window_set_resizable (GTK_WINDOW(W), FALSE); // block again resize
+            init(_WIN_WIDTH_MM, _WIN_HEIGTH_MM, _WIN_SCALE); //... SCENE INIT (WINDOWED)
         }
         else{
-            gtk_window_fullscreen ( GTK_WINDOW (W));
-            init();
+            gtk_window_fullscreen ( GTK_WINDOW (W)); 
             gtk_window_set_resizable (GTK_WINDOW(W), TRUE); // necessary to restore original size
+            init(_FULLSCR_WIDTH_MM, _FULLSCR_HEIGHT_MM, _FULLSCR_SCALE); //... SCENE INIT (FULLSCREEN)
         }
     }
    if (keyval == ' '){ 
@@ -64,8 +57,8 @@ static void on_draw (GtkDrawingArea * area, cairo_t * cr, int width, int height,
 
 // ... UPDATE ...
 gboolean on_idle_loop(GtkWidget * widget){
-    usleep(WAIT); //wait (time in microseconds)
-    MICROSECONDS += WAIT;
+    usleep(INTERVAL); //wait (time in microseconds)
+    MICROSECONDS += INTERVAL;
     // printf("MICROSECONDS = %lu\n", MICROSECONDS);
     ELAPSED_SECONDS = (float)MICROSECONDS / 1000000.0;  // time converted to seconds
     orbit(ELAPSED_SECONDS); // ......................... REV ENGINE FUNCTION ... 
@@ -88,7 +81,7 @@ static void on_shutdown (GApplication * application){
 
 static void on_startup (GApplication * app, gpointer user_data){
     W = gtk_application_window_new (GTK_APPLICATION (app));
-    gtk_window_set_default_size(GTK_WINDOW(W), WIN_WIDTH, WIN_HEIGHT);
+    gtk_window_set_default_size(GTK_WINDOW(W), WIDTH, HEIGHT);
     gtk_window_set_resizable (GTK_WINDOW(W), FALSE);
     gtk_window_set_decorated (GTK_WINDOW (W), FALSE);
     gtk_window_set_title (GTK_WINDOW (W), "orb");
@@ -109,15 +102,8 @@ static void on_startup (GApplication * app, gpointer user_data){
 #define APPLICATION_ID "cairo.app"
 
 int main (int argc, char ** argv) {
-    // ... init GLOBALS ...
-    WIN_WIDTH = _WIN_WIDTH_MM * _DPI * _INCH_PER_MM;
-    WIN_HEIGHT = _WIN_HEIGTH_MM * _DPI * _INCH_PER_MM;
-    //printf("WIN_WIDTH  = %d\n", WIN_WIDTH );
-    //printf("WIN_HEIGHT = %d\n", WIN_HEIGHT);
-    ALPHA = 0;  // orb engine angle (radians)
-    OMEGA = TWO_PI * (float)_ORB_RPM / 60.0; // angular velocity (radians per sec) : 1 rev.p.mn = 1/60 rev.p.s
     
-    init(); // ......................................... SCENE INIT FUNCTION ...
+    init(_WIN_WIDTH_MM, _WIN_HEIGTH_MM, _WIN_SCALE); //... SCENE INIT (WINDOWED)
     
     // ... GTK INIT ...
     GtkApplication * app;
