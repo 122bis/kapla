@@ -1,8 +1,8 @@
 #!/bin/bash
 
-VERSION="014"
+VERSION="015"
 
-for infile in ./*.c; do
+for infile in ../*.c; do
 
     # outfile="${infile%.in}.bak"
     # cp $infile $outfile
@@ -12,7 +12,7 @@ for infile in ./*.c; do
 done
 
 
-for infile in ./*.h; do
+for infile in ../*.h; do
 
     # outfile="${infile%.in}.bak"
     # cp $infile $outfile

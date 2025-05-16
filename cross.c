@@ -7,28 +7,23 @@
 
 void init(int w, int h, float scale)
 {
-
     // ... init GLOBALS ...
-    WIDTH  = w * _DPI * _INCH_PER_MM;
-    HEIGHT = h * _DPI * _INCH_PER_MM;
-    //printf("WIN_WIDTH  = %d\n", WIN_WIDTH );
-    //printf("WIN_HEIGHT = %d\n", WIN_HEIGHT);
-
     INTERVAL = (int)(1000000 / _FPS);   // wait duration (microseconds) in idle loop usleep()
     MICROSECONDS = 0;     // total elapsed time (microseconds)
     ELAPSED_SECONDS = 0;
-
     ALPHA = 0;  // orb engine angle (radians)
     OMEGA = TWO_PI * (float)_ORB_RPM / 60.0; // angular velocity (radians per sec) : 1 rev.p.mn = 1/60 rev.p.s
+    WIDTH = w;
+    HEIGHT = h;
 
+    // size of stuff 
     len = 33 * scale;
     wth = 11 * scale;
     thk =  6 * scale;
-    extents_x = 0.55 * (len + thk + wth + len + thk - len);
-    extents_y = 0.55 * (len + thk + wth + len + thk - len );
-
-    center.x = WIDTH * 0.5;
-    center.y = HEIGHT * 0.5;  // position of the cross on screen
+    extents_x = 0.55 * (len + thk + wth + len + thk - len); // max travel dist x
+    extents_y = 0.55 * (len + thk + wth + len + thk - len); // max travel dist y
+    center.x = w * 0.5;
+    center.y = h * 0.5;  // position of the cross on screen
 
     // positions of four + 1 sliding horizontal rects
     p1 = (struct Point) { len/2 + wth/2 + thk,    wth/2+thk/2 };
@@ -48,12 +43,12 @@ void init(int w, int h, float scale)
     previous_orb = (struct Point) { 0, 0 };
 }
 
-void orbit(float t)
+void orbit(float sec)
 {
     // wheel is rotating, angle stays within [0,360°]
     // % operator returns an int from the remaining of a division
     // fmod is real modulo for floats
-    ALPHA = fmod( (float)t * OMEGA, TWO_PI );
+    ALPHA = fmod( (float)sec * OMEGA, TWO_PI );
     // save previous orb position
     previous_orb.x = orb.x;
     previous_orb.y = orb.y;
@@ -93,6 +88,21 @@ void update()
     }
 }
 
+void export_frame(int frn)
+{
+    char f_name[20];
+    sprintf(f_name, "./png/fr_%04d.png", frn);
+
+    cairo_surface_t * tmp_surface;
+    cairo_t *tmp_cr;
+
+    tmp_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, _PNG_WIDTH, _PNG_HEIGHT);
+    tmp_cr = cairo_create(tmp_surface);
+    draw(tmp_cr);
+    cairo_surface_write_to_png(tmp_surface, f_name);
+    cairo_destroy(tmp_cr);
+    cairo_surface_destroy(tmp_surface);
+}
 
 void draw(cairo_t * cr)
 {

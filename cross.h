@@ -21,12 +21,12 @@
     static struct Point center;  // position of the cross on screen 
 
 
-    // CROSS --------------------------------------------------------------
+    // CROSS -------------------------------------------------------------------
     float alpha;            // angle of wheel
     float omega;            // angular velocity in radian
-    struct Point orb;//  all movement originate from this point
+    struct Point orb;       // all movement originate from this point
     struct Point previous_orb; 
-    struct Vec orb_dir;          // sliding direction
+    struct Vec orb_dir;     // sliding direction
     struct Vec previous_orb_dir; // previous sliding direction
     struct Point p1;            // centers of 4 static + 1 sliding horizontal rects
     struct Point p2;
@@ -42,10 +42,11 @@
     int extents_y;
 
 
-    // STATIC FIGURE LIST FUNCTIONS ------------------------------------------------
+    // FUNCTIONS ---------------------------------------------------------------
     void init(int w, int h, float s); // width height and content scaling factor
     void orbit(float ELAPSED_SECONDS);
     void update();
+    void export_frame(int frn);
     void draw(cairo_t * cr);
 
 
